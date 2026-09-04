@@ -1,0 +1,76 @@
+name: Publish download site
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the distribution repository
+        uses: actions/checkout@v6
+
+      - name: Add the latest installer to the public site artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_RELEASE_TAG: ${{ github.event.release.tag_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_tag="$EVENT_RELEASE_TAG"
+          if [[ -z "$release_tag" ]]; then
+            release_tag="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
+          fi
+
+          rm -rf site/download
+          mkdir -p site/download
+          gh release download "$release_tag" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "TypeMotive-Setup-win-x64.exe" \
+            --pattern "SHA256SUMS.txt" \
+            --dir site/download
+
+          installer="site/download/TypeMotive-Setup-win-x64.exe"
+          checksum="$(awk 'NF { print toupper($1); exit }' site/download/SHA256SUMS.txt)"
+          bytes="$(stat -c '%s' "$installer")"
+          version="${release_tag#v}"
+          size_mib="$(awk -v bytes="$bytes" 'BEGIN { printf "%.0f МБ", bytes / 1048576 }')"
+
+          jq -n \
+            --arg version "$version" \
+            --arg size "$size_mib" \
+            --arg sha256 "$checksum" \
+            --arg download "./download/TypeMotive-Setup-win-x64.exe" \
+            '{version: $version, size: $size, sha256: $sha256, download: $download}' \
+            > site/release.json
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./site
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

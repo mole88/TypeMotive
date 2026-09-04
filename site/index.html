@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="TypeMotive — тренажёр слепой печати для Windows с персональными упражнениями, подробной статистикой и опциональным локальным ИИ."
+    />
+    <meta name="theme-color" content="#1f1e1d" />
+    <title>TypeMotive — тренажёр слепой печати</title>
+    <link rel="icon" href="./assets/typemotive.ico" sizes="any" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">К содержанию</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="TypeMotive — на главную">
+        <img src="./assets/typemotive.ico" alt="" width="36" height="36" />
+        <span>TypeMotive</span>
+      </a>
+      <nav aria-label="Основная навигация">
+        <a href="#features">Возможности</a>
+        <a href="#privacy">Локальный ИИ</a>
+        <a class="nav-download" href="#download">Скачать</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Windows · русский и английский · локальный ИИ</p>
+          <h1 id="hero-title">Печатайте не больше.<br /><span>Печатайте точнее.</span></h1>
+          <p class="hero-lead">
+            TypeMotive замечает сложные сочетания и превращает их в персональную
+            тренировку. Освойте слепую печать с нуля или отточите уже знакомую раскладку.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" data-download-link href="./download/TypeMotive-Setup-win-x64.exe" download>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" /></svg>
+              Скачать для Windows
+            </a>
+            <a class="button button-secondary" href="#features">Посмотреть возможности</a>
+          </div>
+          <p class="release-summary">
+            Версия <span data-release-version>1.0.3</span>
+            <span aria-hidden="true">·</span>
+            Windows 10/11, x64
+            <span aria-hidden="true">·</span>
+            <span data-release-size>62 МБ</span>
+            <span aria-hidden="true">·</span>
+            .NET не требуется
+          </p>
+        </div>
+
+        <div class="practice-card" aria-label="Пример тренировки TypeMotive">
+          <div class="practice-toolbar">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Тренировка</span>
+            <span class="toolbar-mode">русский · с нуля</span>
+          </div>
+          <div class="practice-body">
+            <div class="practice-meta">
+              <span>ТЕКУЩАЯ СТРОКА</span>
+              <span>точность 98%</span>
+            </div>
+            <p class="practice-line"><span>точность рождает</span><mark>с</mark><b>к</b>орость</p>
+            <div class="progress-track" aria-hidden="true"><span></span></div>
+            <figure class="keyboard-figure">
+              <img src="./assets/keyboard-ru.png" alt="Экранная русская клавиатура с цветовой подсказкой для пальцев" />
+            </figure>
+          </div>
+          <div class="practice-footer">
+            <span><strong>246</strong> знаков / мин</span>
+            <span><strong>2:14</strong> активного времени</span>
+            <span><strong>12</strong> строк</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="signal-strip" aria-label="Что измеряет TypeMotive">
+        <span>скорость</span>
+        <span>точность</span>
+        <span>ошибки</span>
+        <span>переходы между буквами</span>
+        <span>прогресс по строкам</span>
+      </section>
+
+      <section class="features" id="features" aria-labelledby="features-title">
+        <div class="section-heading">
+          <p class="eyebrow">Практика с обратной связью</p>
+          <h2 id="features-title">Тренировка, которая меняется вместе с вами</h2>
+          <p>Не просто счётчик скорости: TypeMotive показывает, где именно теряется ритм, и помогает это исправить.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature feature-wide">
+            <div class="feature-index">01</div>
+            <div>
+              <h3>Учится на ваших ошибках</h3>
+              <p>
+                Приложение анализирует опечатки и медленные переходы между буквами,
+                а затем собирает персональные упражнения по проблемным сочетаниям.
+              </p>
+            </div>
+            <div class="bigram-demo" aria-label="Пример анализа сочетаний">
+              <span class="bigram-label">сложные сочетания</span>
+              <div><b>ст</b><i style="--score: 82%"></i><em>82%</em></div>
+              <div><b>пр</b><i style="--score: 64%"></i><em>64%</em></div>
+              <div><b>ть</b><i style="--score: 48%"></i><em>48%</em></div>
+            </div>
+          </article>
+
+          <article class="feature">
+            <div class="feature-index">02</div>
+            <h3>От первых клавиш до свободной печати</h3>
+            <p>
+              Режим «с нуля» открывает клавиши поэтапно. Для уверенных пользователей —
+              четыре уровня, встроенные тексты и импорт собственных <code>.txt</code>.
+            </p>
+            <div class="level-ladder" aria-label="Уровни обучения">
+              <span>с нуля</span><span>старт</span><span>начальный</span><span>средний</span><span>продвинутый</span>
+            </div>
+          </article>
+
+          <article class="feature feature-dark" id="privacy">
+            <div class="feature-index">03</div>
+            <h3>ИИ остаётся на вашем компьютере</h3>
+            <p>
+              Необязательная локальная модель Qwen создаёт тематические тексты и
+              подмешивает нужные тренировочные слова. Набираемый текст и запросы не
+              отправляются в облачный AI-сервис.
+            </p>
+            <div class="privacy-badge">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 2.7 8.2 7 10 4.3-1.8 7-5.5 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></svg>
+              <span>Локальная обработка после установки модели</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workflow" aria-labelledby="workflow-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">Быстрый старт</p>
+          <h2 id="workflow-title">Три шага до первой строки</h2>
+        </div>
+        <ol>
+          <li><span>1</span><div><strong>Скачайте</strong><p>Один установщик для 64-битной Windows.</p></div></li>
+          <li><span>2</span><div><strong>Выберите режим</strong><p>Русский или английский, с нуля или с подходящего уровня.</p></div></li>
+          <li><span>3</span><div><strong>Начните печатать</strong><p>Подсказки включаются и отключаются в любой момент.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="download-panel" id="download" aria-labelledby="download-title">
+        <div>
+          <p class="eyebrow">TypeMotive <span data-release-version>1.0.3</span></p>
+          <h2 id="download-title">Ваша следующая строка начинается здесь.</h2>
+          <p>Для 64-битной Windows 10 версии 1809 и новее. Устанавливается без прав администратора.</p>
+        </div>
+        <div class="download-actions">
+          <a class="button button-light" data-download-link href="./download/TypeMotive-Setup-win-x64.exe" download>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" /></svg>
+            Скачать <span data-release-size>62 МБ</span>
+          </a>
+          <a class="checksum-link" href="./download/SHA256SUMS.txt">Контрольная сумма SHA-256</a>
+        </div>
+      </section>
+
+      <aside class="security-note" aria-label="Примечание об установщике">
+        <strong>Перед установкой.</strong>
+        <p>
+          Установщик пока не подписан цифровым сертификатом, поэтому Windows SmartScreen
+          может попросить подтвердить запуск. SHA-256:
+          <code data-release-checksum>FC4A7CCAAE061BD794F0BB0A7C59C6197014DE6ADABE13E5D8FD0C8BCD093E9F</code>
+        </p>
+      </aside>
+    </main>
+
+    <footer>
+      <a class="brand brand-footer" href="#top">
+        <img src="./assets/typemotive.ico" alt="" width="30" height="30" />
+        <span>TypeMotive</span>
+      </a>
+      <p>Слепая печать с понятной обратной связью.</p>
+      <p>© <span data-current-year>2026</span> TypeMotive</p>
+    </footer>
+  </body>
+</html>
