@@ -1,2 +1,6 @@
 site/download/
 release-assets/
+
+# Local design reference and unpacked working copy
+site/assets/TypeMotive Site.html
+template-unpacked.html

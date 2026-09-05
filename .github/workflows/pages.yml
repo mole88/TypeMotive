@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: vars.PAGES_ENABLED == 'true'
+    if: github.event_name != 'release' || (github.event.release.prerelease == false && github.event.release.draft == false)
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -33,14 +33,10 @@ jobs:
       - name: Add the latest installer to the public site artifact
         env:
           GH_TOKEN: ${{ github.token }}
-          EVENT_RELEASE_TAG: ${{ github.event.release.tag_name }}
         shell: bash
         run: |
           set -euo pipefail
-          release_tag="$EVENT_RELEASE_TAG"
-          if [[ -z "$release_tag" ]]; then
-            release_tag="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
-          fi
+          release_tag="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
 
           rm -rf site/download
           mkdir -p site/download
@@ -52,6 +48,8 @@ jobs:
 
           installer="site/download/TypeMotive-Setup-win-x64.exe"
           checksum="$(awk 'NF { print toupper($1); exit }' site/download/SHA256SUMS.txt)"
+          [[ "$checksum" =~ ^[A-F0-9]{64}$ ]]
+          printf '%s  %s\n' "$checksum" "$installer" | sha256sum --check --strict
           bytes="$(stat -c '%s' "$installer")"
           version="${release_tag#v}"
           size_mib="$(awk -v bytes="$bytes" 'BEGIN { printf "%.0f МБ", bytes / 1048576 }')"
@@ -63,6 +61,22 @@ jobs:
             --arg download "./download/TypeMotive-Setup-win-x64.exe" \
             '{version: $version, size: $size, sha256: $sha256, download: $download}' \
             > site/release.json
+
+      - name: Render release details into the page
+        shell: python
+        run: |
+          import html
+          import json
+          import pathlib
+          import re
+
+          root = pathlib.Path('site')
+          release = json.loads((root / 'release.json').read_text())
+          page = (root / 'index.html').read_text()
+          for key, field in [('version', 'version'), ('size', 'size'), ('checksum', 'sha256')]:
+              pattern = rf'(<(?:span|code) data-release-{key}>)[^<]*(</(?:span|code)>)'
+              page = re.sub(pattern, lambda match: match[1] + html.escape(release[field]) + match[2], page)
+          (root / 'index.html').write_text(page)
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

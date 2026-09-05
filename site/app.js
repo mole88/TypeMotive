@@ -1,7 +1,7 @@
 const fallbackRelease = {
-  version: "1.0.3",
-  size: "62 МБ",
-  sha256: "FC4A7CCAAE061BD794F0BB0A7C59C6197014DE6ADABE13E5D8FD0C8BCD093E9F",
+  version: document.querySelector("[data-release-version]").textContent,
+  size: document.querySelector("[data-release-size]").textContent,
+  sha256: document.querySelector("[data-release-checksum]").textContent,
   download: "./download/TypeMotive-Setup-win-x64.exe",
 };
 
@@ -33,3 +33,20 @@ fetch("./release.json", { cache: "no-store" })
   })
   .then(applyRelease)
   .catch(() => applyRelease(fallbackRelease));
+
+const lightbox = document.querySelector('.lightbox');
+if (lightbox && typeof lightbox.showModal === 'function') {
+  document.querySelectorAll('[data-lightbox]').forEach(link => {
+    link.addEventListener('click', event => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      const preview = lightbox.querySelector('img');
+      preview.src = link.href;
+      preview.alt = link.querySelector('img').alt;
+      lightbox.querySelector('p').textContent = preview.alt;
+      lightbox.showModal();
+    });
+  });
+  lightbox.querySelector('button').addEventListener('click', () => lightbox.close());
+  lightbox.addEventListener('click', event => { if (event.target === lightbox) { const r = lightbox.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) lightbox.close(); } });
+}
