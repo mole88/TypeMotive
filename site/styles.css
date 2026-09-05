@@ -203,3 +203,8 @@ h2{font-size:43px;margin:15px 0 20px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
 *{transition:none!important}
 }
+.language-switch{display:flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:3px;padding:3px;flex-shrink:0;font:11px/1.5 var(--body)}
+.language-switch a{padding:5px 7px;color:var(--muted);border-radius:2px}
+.language-switch a[aria-current="page"]{background:var(--gold);color:#fffaf3}
+.language-switch a:hover:not([aria-current="page"]){background:var(--surface);color:var(--gold)}
+@media(max-width:700px){.nav>.small-button{display:none}.language-switch a{padding:6px 9px}}

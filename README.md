@@ -16,3 +16,8 @@ Site changes on main also deploy automatically.
 The design adapts the supplied TypeMotive Site reference: Cormorant Garamond headings, Lora body text, warm gold accents and a light background. Font licenses are included under site/assets/fonts.
 
 Application images are rendered directly from the WPF application windows at double resolution, with a separate data directory. Statistics and imported texts shown are demonstration data, identified in the captions. PNG originals open from the WebP previews.
+## Languages
+
+English is the default at `/`; Russian is available at `/ru/`.
+The header language links work without JavaScript. Keep both static pages in sync when editing website copy.
+Release metadata and downloads are shared, with localized size units on each page.

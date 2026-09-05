@@ -1,3 +1,4 @@
+const siteBase = new URL(".", document.currentScript.src);
 const fallbackRelease = {
   version: document.querySelector("[data-release-version]").textContent,
   size: document.querySelector("[data-release-size]").textContent,
@@ -12,13 +13,13 @@ function applyRelease(release) {
     element.textContent = data.version;
   });
   document.querySelectorAll("[data-release-size]").forEach((element) => {
-    element.textContent = data.size;
+    element.textContent = data.size.replace(/МБ|MB/g, document.documentElement.lang === "ru" ? "МБ" : "MB");
   });
   document.querySelectorAll("[data-release-checksum]").forEach((element) => {
     element.textContent = data.sha256.toUpperCase();
   });
   document.querySelectorAll("[data-download-link]").forEach((element) => {
-    element.href = data.download;
+    element.href = new URL(data.download, siteBase).href;
   });
 }
 
@@ -26,7 +27,7 @@ document.querySelectorAll("[data-current-year]").forEach((element) => {
   element.textContent = String(new Date().getFullYear());
 });
 
-fetch("./release.json", { cache: "no-store" })
+fetch(new URL("release.json", siteBase), { cache: "no-store" })
   .then((response) => {
     if (!response.ok) throw new Error("Release metadata is unavailable");
     return response.json();

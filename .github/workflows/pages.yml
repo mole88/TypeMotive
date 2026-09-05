@@ -72,11 +72,15 @@ jobs:
 
           root = pathlib.Path('site')
           release = json.loads((root / 'release.json').read_text())
-          page = (root / 'index.html').read_text()
-          for key, field in [('version', 'version'), ('size', 'size'), ('checksum', 'sha256')]:
-              pattern = rf'(<(?:span|code) data-release-{key}>)[^<]*(</(?:span|code)>)'
-              page = re.sub(pattern, lambda match: match[1] + html.escape(release[field]) + match[2], page)
-          (root / 'index.html').write_text(page)
+          for page_path in [root / 'index.html', root / 'ru/index.html']:
+              page = page_path.read_text(encoding='utf-8')
+              for key, field in [('version', 'version'), ('size', 'size'), ('checksum', 'sha256')]:
+                  value = release[field]
+                  if field == 'size' and page_path.parent == root:
+                      value = value.replace('МБ', 'MB')
+                  pattern = rf'(<(?:span|code) data-release-{key}>)[^<]*(</(?:span|code)>)'
+                  page = re.sub(pattern, lambda match: match[1] + html.escape(value) + match[2], page)
+              page_path.write_text(page, encoding='utf-8')
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
